@@ -82,18 +82,18 @@ import java.util.Random;
 public class Main extends Plugin {
     @Override
     public void init() {
-        Sound dingC5  = Vars.tree.loadSound("ding432-1C5");
-        Sound dingD5  = Vars.tree.loadSound("ding432-1D5");
-        Sound dingDb5 = Vars.tree.loadSound("ding432-1Db5");
-        Sound dingE5  = Vars.tree.loadSound("ding432-1E5");
-        Sound dingEb5 = Vars.tree.loadSound("ding432-1Eb5");
-        Sound dingF5  = Vars.tree.loadSound("ding432-1F5");
-        Sound dingG5  = Vars.tree.loadSound("ding432-1G5");
-        Sound dingGb5 = Vars.tree.loadSound("ding432-1Gb5");
-        Sound dingA5  = Vars.tree.loadSound("ding432-1A5");
-        Sound dingAb5 = Vars.tree.loadSound("ding432-1Ab5");
-        Sound dingB5  = Vars.tree.loadSound("ding432-1B5");
-        Sound dingBb5 = Vars.tree.loadSound("ding432-1Bb5");
+        Sound dingC5  = Vars.tree.loadSound("ding432-C5");
+        Sound dingD5  = Vars.tree.loadSound("ding432-D5");
+        Sound dingDb5 = Vars.tree.loadSound("ding432-Db5");
+        Sound dingE5  = Vars.tree.loadSound("ding432-E5");
+        Sound dingEb5 = Vars.tree.loadSound("ding432-Eb5");
+        Sound dingF5  = Vars.tree.loadSound("ding432-F5");
+        Sound dingG5  = Vars.tree.loadSound("ding432-G5");
+        Sound dingGb5 = Vars.tree.loadSound("ding432-Gb5");
+        Sound dingA5  = Vars.tree.loadSound("ding432-A5");
+        Sound dingAb5 = Vars.tree.loadSound("ding432-Ab5");
+        Sound dingB5  = Vars.tree.loadSound("ding432-B5");
+        Sound dingBb5 = Vars.tree.loadSound("ding432-Bb5");
         Sound elec01  = Vars.tree.loadSound("elec01");
 
         Events.on(UnitDamageEvent.class, e -> {
