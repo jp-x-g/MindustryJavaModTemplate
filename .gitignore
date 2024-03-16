@@ -155,3 +155,6 @@ gradle-app.setting
 .DS_Store
 Thumbs.db
 android/libs/
+
+## Adding this March 15 2024
+assets/sounds/test*
