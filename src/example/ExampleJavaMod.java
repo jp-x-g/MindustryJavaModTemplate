@@ -12,9 +12,9 @@ import mindustry.ui.dialogs.*;
 import arc.audio.Sound;
 import java.util.Random;
 
-public class saundozu extends Mod{
+public class ExampleJavaMod extends Mod{
 
-    public saundozu(){
+    public ExampleJavaMod(){
         Log.info("Loaded saundozu constructor.");
         Sound dingC5  = Vars.tree.loadSound("ding432-1C5");
         Sound dingD5  = Vars.tree.loadSound("ding432-1D5");
