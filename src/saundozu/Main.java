@@ -98,7 +98,7 @@ public class Main extends Plugin {
 
         Events.on(UnitDamageEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
-            if (!String.valueOf(e.unit.type()).equals("dagger")) return;
+            if (!String.valueOf(e.unit.type()).equals("flare")) return;
             Random rand = new Random();
             int num = rand.nextInt(3);
             if (num == 0) dingC5.at(e.unit.x, e.unit.y);
@@ -113,7 +113,7 @@ public class Main extends Plugin {
 
         Events.on(UnitDestroyEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
-            if (!String.valueOf(e.unit.type()).equals("dagger")) return;
+            if (!String.valueOf(e.unit.type()).equals("flare")) return;
             elec01.at(e.unit.x, e.unit.y);
         });      
     }
