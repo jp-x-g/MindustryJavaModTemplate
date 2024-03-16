@@ -42,7 +42,7 @@ public class ExampleJavaMod extends Mod{
             // });
         });
 
-        Events.on(unitDamageEvent.class, e -> {
+        Events.on(UnitDamageEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
             if (!String.valueOf(e.unit.type()).equals("dagger")) return;
             Random rand = new Random();
@@ -52,7 +52,7 @@ public class ExampleJavaMod extends Mod{
             else if (num == 2) dingF5.at(e.unit.x, e.unit.y);
         });       
 
-        Events.on(unitDestroyEvent.class, e -> {
+        Events.on(UnitDestroyEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
             if (!String.valueOf(e.unit.type()).equals("dagger")) return;
             dingAb5.at(e.unit.x, e.unit.y);
