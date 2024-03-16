@@ -56,7 +56,7 @@ public class saundozu extends Mod{
         Events.on(UnitDestroyEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
             if (!String.valueOf(e.unit.type()).equals("dagger")) return;
-            dingAb5.at(e.unit.x, e.unit.y);
+            elec01.at(e.unit.x, e.unit.y);
         });       
     } // ends public saundozu()
 
