@@ -16,15 +16,18 @@ public class ExampleJavaMod extends Mod{
 
     public ExampleJavaMod(){
         Log.info("Loaded ExampleJavaMod constructor.");
-        Sound test1;
-        Sound test2;
-        Sound test3;
-        Sound test4;
-
-        test1 = Vars.tree.loadSound("test-zeal01");
-        test2 = Vars.tree.loadSound("test-zeal02");
-        test3 = Vars.tree.loadSound("test-zeal03");
-        test4 = Vars.tree.loadSound("test-zeal04");
+        Sound dingC5  = Vars.tree.loadSound("ding432-1C5");
+        Sound dingD5  = Vars.tree.loadSound("ding432-1D5");
+        Sound dingDb5 = Vars.tree.loadSound("ding432-1Db5");
+        Sound dingE5  = Vars.tree.loadSound("ding432-1E5");
+        Sound dingEb5 = Vars.tree.loadSound("ding432-1Eb5");
+        Sound dingF5  = Vars.tree.loadSound("ding432-1F5");
+        Sound dingG5  = Vars.tree.loadSound("ding432-1G5");
+        Sound dingGb5 = Vars.tree.loadSound("ding432-1Gb5");
+        Sound dingA5  = Vars.tree.loadSound("ding432-1A5");
+        Sound dingAb5 = Vars.tree.loadSound("ding432-1Ab5");
+        Sound dingB5  = Vars.tree.loadSound("ding432-1B5");
+        Sound dingBb5 = Vars.tree.loadSound("ding432-1Bb5");
 
         //listen for game load event
         Events.on(ClientLoadEvent.class, e -> {
@@ -44,9 +47,15 @@ public class ExampleJavaMod extends Mod{
             if (!String.valueOf(e.unit.type()).equals("dagger")) return;
             Random rand = new Random();
             int num = rand.nextInt(3);
-            if (num == 0) test1.at(e.unit.x, e.unit.y);
-            else if (num == 1) test2.at(e.unit.x, e.unit.y);
-            else if (num == 2) test3.at(e.unit.x, e.unit.y);
+            if (num == 0) dingC5.at(e.unit.x, e.unit.y);
+            else if (num == 1) dingDb5.at(e.unit.x, e.unit.y);
+            else if (num == 2) dingF5.at(e.unit.x, e.unit.y);
+        });       
+
+        Events.on(unitDestroyEvent.class, e -> {
+            if (!e.unit.isPlayer()) return;
+            if (!String.valueOf(e.unit.type()).equals("dagger")) return;
+            dingAb5.at(e.unit.x, e.unit.y);
         });       
     } // ends public ExampleJavaMod()
 
