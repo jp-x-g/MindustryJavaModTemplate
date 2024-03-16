@@ -12,10 +12,10 @@ import mindustry.ui.dialogs.*;
 import arc.audio.Sound;
 import java.util.Random;
 
-public class ExampleJavaMod extends Mod{
+public class saundozu extends Mod{
 
-    public ExampleJavaMod(){
-        Log.info("Loaded ExampleJavaMod constructor.");
+    public saundozu(){
+        Log.info("Loaded saundozu constructor.");
         Sound dingC5  = Vars.tree.loadSound("ding432-1C5");
         Sound dingD5  = Vars.tree.loadSound("ding432-1D5");
         Sound dingDb5 = Vars.tree.loadSound("ding432-1Db5");
@@ -28,18 +28,19 @@ public class ExampleJavaMod extends Mod{
         Sound dingAb5 = Vars.tree.loadSound("ding432-1Ab5");
         Sound dingB5  = Vars.tree.loadSound("ding432-1B5");
         Sound dingBb5 = Vars.tree.loadSound("ding432-1Bb5");
+        Sound elec01  = Vars.tree.loadSound("elec01");
 
         //listen for game load event
         Events.on(ClientLoadEvent.class, e -> {
             //show dialog upon startup
-            // Time.runTask(10f, () -> {
-                // BaseDialog dialog = new BaseDialog("frog");
-                // dialog.cont.add("behold").row();
-                // //mod sprites are prefixed with the mod name (this mod is called 'example-java-mod' in its config)
-                // dialog.cont.image(Core.atlas.find("example-java-mod-frog")).pad(20f).row();
-                // dialog.cont.button("I see", dialog::hide).size(100f, 50f);
-                // dialog.show();
-            // });
+             Time.runTask(10f, () -> {
+                 BaseDialog dialog = new BaseDialog("frog");
+                 dialog.cont.add("it's loaded").row();
+                 //mod sprites are prefixed with the mod name (this mod is called 'example-java-mod' in its config)
+                 dialog.cont.image(Core.atlas.find("example-java-mod-frog")).pad(20f).row();
+                 dialog.cont.button("I see", dialog::hide).size(100f, 50f);
+                 dialog.show();
+             });
         });
 
         Events.on(UnitDamageEvent.class, e -> {
@@ -57,7 +58,7 @@ public class ExampleJavaMod extends Mod{
             if (!String.valueOf(e.unit.type()).equals("dagger")) return;
             dingAb5.at(e.unit.x, e.unit.y);
         });       
-    } // ends public ExampleJavaMod()
+    } // ends public saundozu()
 
     @Override
     public void loadContent(){
@@ -130,4 +131,4 @@ public class ExampleJavaMod extends Mod{
 
     }
 
-} // ends public class ExampleJavaMod
+} // ends public class saundozu

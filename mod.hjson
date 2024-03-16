@@ -2,13 +2,13 @@
 displayName: "Java Mod Template"
 
 #the internal name of your mod
-name: "example-java-mod"
+name: "saundozu"
 
 #your name
-author: "You"
+author: "jpxg"
 
 #the fully qualified main class of the mod
-main: "example.ExampleJavaMod"
+main: "example.saundozu"
 
 #the mod description as seen in the mod dialog
 description: "A Mindustry Java mod template."
