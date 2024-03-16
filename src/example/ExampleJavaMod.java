@@ -133,6 +133,8 @@ public class ExampleJavaMod extends Mod{
 
 } // ends public class examplejavamod
 
+// this is based on https://github.com/BnDLett/custom-dagger-sounds/
+
 public class Main extends Plugin {
     @Override
     public void init() {
