@@ -1,0 +1,666 @@
+[I] Class Name: mindustry.gen.Player
+[I] Fields:
+[I]   deathDelay - 60.0
+[I]   persistPlans - []
+[I]   added - true
+[I]   admin - false
+[I]   assisting - false
+[I]   boosting - false
+[I]   color - ff76a6ff
+[I]   con - null
+[I]   deathTimer - 17.977139
+[I]   fooUser - false
+[I]   id - 0
+[I]   index__all - 45
+[I]   index__draw - 0
+[I]   index__player - 0
+[I]   index__sync - 0
+[I]   justSwitchFrom - null
+[I]   justSwitchTo - null
+[I]   lastCommand - null
+[I]   lastReadUnit - NullUnit
+[I]   lastText - 
+[I]   lastUpdated - 0
+[I]   locale - en
+[I]   mouseX - 382.56903
+[I]   mouseY - 1317.922
+[I]   name - commit it then to the flames
+[I]   serverID - null
+[I]   shooting - false
+[I]   team - sharded
+[I]   textFadeTime - -4.085725
+[I]   timer - arc.util.Interval@27a97e08
+[I]   trace - null
+[I]   typing - false
+[I]   unit - NullUnit
+[I]   unitOnDeath - Unit#744:gamma
+[I]   updateSpacing - 0
+[I]   wrongReadUnits - 0
+[I]   x - 247.2592
+[I]   x_LAST_ - 0.0
+[I]   x_TARGET_ - 0.0
+[I]   y - 1243.223
+[I]   y_LAST_ - 0.0
+[I]   y_TARGET_ - 0.0
+[I] Methods:
+[I]   name
+[I]   name
+[I]   add
+[I]   remove
+[I]   toString
+[I]   update
+[I]   x
+[I]   x
+[I]   locale
+[I]   locale
+[I]   id
+[I]   id
+[I]   set
+[I]   set
+[I]   write
+[I]   trace
+[I]   trace
+[I]   read
+[I]   con
+[I]   con
+[I]   reset
+[I]   create
+[I]   as
+[I]   y
+[I]   y
+[I]   isNull
+[I]   color
+[I]   color
+[I]   unit
+[I]   unit
+[I]   ip
+[I]   self
+[I]   getInfo
+[I]   draw
+[I]   uuid
+[I]   team
+[I]   team
+[I]   isLocal
+[I]   core
+[I]   floorOn
+[I]   clipSize
+[I]   getX
+[I]   getY
+[I]   isAdded
+[I]   assisting
+[I]   assisting
+[I]   dead
+[I]   timer
+[I]   timer
+[I]   timer
+[I]   trns
+[I]   trns
+[I]   admin
+[I]   admin
+[I]   tileX
+[I]   tileY
+[I]   icon
+[I]   coloredName
+[I]   interpolate
+[I]   mouseX
+[I]   mouseX
+[I]   mouseY
+[I]   mouseY
+[I]   usid
+[I]   boosting
+[I]   boosting
+[I]   shooting
+[I]   shooting
+[I]   kick
+[I]   kick
+[I]   kick
+[I]   kick
+[I]   isRemote
+[I]   serialize
+[I]   classId
+[I]   afterRead
+[I]   sendMessage
+[I]   sendMessage
+[I]   sendMessage
+[I]   plainName
+[I]   tileOn
+[I]   clearUnit
+[I]   justSwitchFrom
+[I]   justSwitchFrom
+[I]   justSwitchTo
+[I]   justSwitchTo
+[I]   checkSpawn
+[I]   typing
+[I]   typing
+[I]   bestCore
+[I]   deathTimer
+[I]   deathTimer
+[I]   closestCore
+[I]   isBuilder
+[I]   buildOn
+[I]   onSolid
+[I]   blockOn
+[I]   lastText
+[I]   lastText
+[I]   unitOnDeath
+[I]   unitOnDeath
+[I]   fooUser
+[I]   fooUser
+[I]   textFadeTime
+[I]   textFadeTime
+[I]   serverID
+[I]   serverID
+[I]   lastUpdated
+[I]   lastUpdated
+[I]   updateSpacing
+[I]   updateSpacing
+[I]   lastCommand
+[I]   lastCommand
+[I]   afterSync
+[I]   sendUnformatted
+[I]   sendUnformatted
+[I]   snapInterpolation
+[I]   setIndex__all
+[I]   setIndex__draw
+[I]   setIndex__player
+[I]   setIndex__sync
+[I]   displayAmmo
+[I]   isLogicControllable
+[I]   isValidController
+[I]   handleSyncHidden
+[I]   readSync
+[I]   snapSync
+[I]   writeSyncManual
+[I]   readSyncManual
+[I]   isSyncHidden
+[I]   writeSync
+[I]   wait
+[I]   wait
+[I]   wait
+[I]   equals
+[I]   hashCode
+[I]   getClass
+[I]   notify
+[I]   notifyAll
+[I]   dst
+[I]   dst
+[I]   within
+[I]   within
+[I]   angleTo
+[I]   angleTo
+[I]   dst2
+[I]   dst2
+[I]   removed
+[I]   hit
+[I]   isBeingControlled
+[I]   updateUnit
+[I] Class Name: mindustry.gen.UnitEntityLegacyGamma
+[I] Fields:
+[I] Methods:
+[I]   write
+[I]   read
+[I]   create
+[I]   create
+[I]   serialize
+[I]   classId
+[I]   solidity
+[I]   canPass
+[I]   updateLastPosition
+[I]   collision
+[I]   canPassOn
+[I]   deltaAngle
+[I]   deltaLen
+[I]   getCollisions
+[I]   hitboxTile
+[I]   velAddNet
+[I]   velAddNet
+[I]   emitWalkSound
+[I]   floorSpeedMultiplier
+[I]   drownFloor
+[I]   updateDrowning
+[I]   wobble
+[I]   healFract
+[I]   clampHealth
+[I]   damageContinuous
+[I]   buildPlan
+[I]   hasItem
+[I]   shouldSkip
+[I]   drawBuilding
+[I]   drawBuildingBeam
+[I]   drawPlanTop
+[I]   updateBuildLogic
+[I]   validatePlans
+[I]   unapply
+[I]   statusColor
+[I]   statusBits
+[I]   hasEffect
+[I]   isImmune
+[I]   clearStatuses
+[I]   offloadImmediately
+[I]   mass
+[I]   impulseNet
+[I]   rawDamage
+[I]   physicSize
+[I]   getControllerName
+[I]   pathType
+[I]   unloaded
+[I]   isPathImpassable
+[I]   aimLook
+[I]   aimLook
+[I]   rotateMove
+[I]   setProp
+[I]   setProp
+[I]   setProp
+[I]   updateBoosting
+[I]   isRotate
+[I]   ammof
+[I]   setWeaponRotation
+[I]   setupWeapons
+[I]   add
+[I]   remove
+[I]   toString
+[I]   update
+[I]   apply
+[I]   apply
+[I]   count
+[I]   bounds
+[I]   set
+[I]   set
+[I]   set
+[I]   destroy
+[I]   cap
+[I]   as
+[I]   isNull
+[I]   command
+[I]   display
+[I]   range
+[I]   self
+[I]   inRange
+[I]   move
+[I]   move
+[I]   getDuration
+[I]   item
+[I]   isValid
+[I]   draw
+[I]   itemCapacity
+[I]   isPlayer
+[I]   isLocal
+[I]   core
+[I]   floorOn
+[I]   isBoss
+[I]   clipSize
+[I]   targetable
+[I]   sense
+[I]   sense
+[I]   senseObject
+[I]   drawPlan
+[I]   damageContinuousPierce
+[I]   isEnemy
+[I]   canDrown
+[I]   setType
+[I]   getX
+[I]   getY
+[I]   inFogTo
+[I]   isAdded
+[I]   isFlying
+[I]   speed
+[I]   damage
+[I]   damage
+[I]   hitSize
+[I]   collides
+[I]   hittable
+[I]   heal
+[I]   heal
+[I]   damagePierce
+[I]   damagePierce
+[I]   impulse
+[I]   impulse
+[I]   kill
+[I]   trns
+[I]   trns
+[I]   controller
+[I]   controller
+[I]   checkTarget
+[I]   damaged
+[I]   healthf
+[I]   moving
+[I]   tileX
+[I]   tileY
+[I]   icon
+[I]   getPlayer
+[I]   isAI
+[I]   hasWeapons
+[I]   killed
+[I]   landed
+[I]   interpolate
+[I]   approach
+[I]   lookAt
+[I]   lookAt
+[I]   lookAt
+[I]   mining
+[I]   isRemote
+[I]   afterRead
+[I]   canShoot
+[I]   isBuilding
+[I]   maxAccepted
+[I]   addItem
+[I]   addItem
+[I]   removeBuild
+[I]   isGrounded
+[I]   tileOn
+[I]   clearItem
+[I]   addBuild
+[I]   addBuild
+[I]   canMine
+[I]   canMine
+[I]   validMine
+[I]   validMine
+[I]   getMineResult
+[I]   acceptsItem
+[I]   hitbox
+[I]   activelyBuilding
+[I]   moveAt
+[I]   moveAt
+[I]   aim
+[I]   aim
+[I]   controlWeapons
+[I]   controlWeapons
+[I]   isCommandable
+[I]   closestCore
+[I]   prefRotation
+[I]   movePref
+[I]   clearBuilding
+[I]   displayable
+[I]   cheating
+[I]   closestEnemyCore
+[I]   buildOn
+[I]   onSolid
+[I]   blockOn
+[I]   drawBuildPlans
+[I]   canBuild
+[I]   afterSync
+[I]   resetController
+[I]   snapInterpolation
+[I]   canLand
+[I]   handleSyncHidden
+[I]   readSync
+[I]   snapSync
+[I]   writeSyncManual
+[I]   readSyncManual
+[I]   isSyncHidden
+[I]   writeSync
+[I]   buildAlpha
+[I]   buildAlpha
+[I]   disarmed
+[I]   disarmed
+[I]   setIndex__unit
+[I]   isShooting
+[I]   isShooting
+[I]   mineTimer
+[I]   mineTimer
+[I]   splashTimer
+[I]   splashTimer
+[I]   lastFogPos
+[I]   lastFogPos
+[I]   physref
+[I]   physref
+[I]   type
+[I]   type
+[I]   x
+[I]   x
+[I]   id
+[I]   id
+[I]   stack
+[I]   stack
+[I]   flag
+[I]   flag
+[I]   y
+[I]   y
+[I]   trail
+[I]   trail
+[I]   rotation
+[I]   rotation
+[I]   team
+[I]   team
+[I]   elevation
+[I]   elevation
+[I]   health
+[I]   health
+[I]   armor
+[I]   armor
+[I]   healthMultiplier
+[I]   healthMultiplier
+[I]   speedMultiplier
+[I]   speedMultiplier
+[I]   buildSpeedMultiplier
+[I]   buildSpeedMultiplier
+[I]   dragMultiplier
+[I]   dragMultiplier
+[I]   hovering
+[I]   hovering
+[I]   abilities
+[I]   abilities
+[I]   ammo
+[I]   ammo
+[I]   lastCommanded
+[I]   lastCommanded
+[I]   shieldAlpha
+[I]   shieldAlpha
+[I]   mounts
+[I]   mounts
+[I]   hitTime
+[I]   hitTime
+[I]   drownTime
+[I]   drownTime
+[I]   shadowAlpha
+[I]   shadowAlpha
+[I]   hitSize
+[I]   drag
+[I]   drag
+[I]   reloadMultiplier
+[I]   reloadMultiplier
+[I]   maxHealth
+[I]   maxHealth
+[I]   dead
+[I]   dead
+[I]   damageMultiplier
+[I]   damageMultiplier
+[I]   aimX
+[I]   aimX
+[I]   aimY
+[I]   aimY
+[I]   vel
+[I]   vel
+[I]   plans
+[I]   plans
+[I]   itemTime
+[I]   itemTime
+[I]   lastDrownFloor
+[I]   lastDrownFloor
+[I]   healTime
+[I]   healTime
+[I]   shield
+[I]   shield
+[I]   deltaX
+[I]   deltaX
+[I]   deltaY
+[I]   deltaY
+[I]   spawnedByCore
+[I]   spawnedByCore
+[I]   dockedType
+[I]   dockedType
+[I]   updateBuilding
+[I]   updateBuilding
+[I]   mineTile
+[I]   mineTile
+[I]   lastX
+[I]   lastX
+[I]   lastY
+[I]   lastY
+[I]   lastUpdated
+[I]   lastUpdated
+[I]   updateSpacing
+[I]   updateSpacing
+[I]   setIndex__all
+[I]   setIndex__draw
+[I]   setIndex__sync
+[I]   wait
+[I]   wait
+[I]   wait
+[I]   equals
+[I]   hashCode
+[I]   getClass
+[I]   notify
+[I]   notifyAll
+[I]   dst
+[I]   dst
+[I]   within
+[I]   within
+[I]   angleTo
+[I]   angleTo
+[I]   dst2
+[I]   dst2
+
+
+            Object[] itemArray = Vars.control.input.selectedUnits.toArray();
+            for (Object item : itemArray) {
+                Log.info(item + " (Type: " + item.getClass().getSimpleName() + ")");
+            }
+            
+[I] Unit#1107:quad (Type: PayloadUnitLegacyQuad)
+[I] Unit#1231:merui (Type: LegsUnit)
+[I] Unit#1336:obviate (Type: UnitEntity)
+[I] Unit#1577:dagger (Type: MechUnit)
+[I] Unit#1604:dagger (Type: MechUnit)
+[I] Unit#1202:merui (Type: LegsUnit)
+[I] Unit#1128:quad (Type: PayloadUnitLegacyQuad)
+[I] Unit#1160:merui (Type: LegsUnit)
+[I] Unit#1183:merui (Type: LegsUnit)
+[I] Unit#1292:obviate (Type: UnitEntity)
+[I] Unit#1038:poly (Type: UnitEntityLegacyPoly)
+[I] Unit#1061:quad (Type: PayloadUnitLegacyQuad)
+[I] Unit#1083:quad (Type: PayloadUnitLegacyQuad)
+[I] Unit#1011:poly (Type: UnitEntityLegacyPoly)
+[I] Class Name: arc.struct.Seq
+[I] Fields:
+[I]   iteratorsAllocated - 4016
+[I]   extraIteratorsAllocated - 0
+[I]   items - [Ljava.lang.Object;@27d57a2c
+[I]   size - 14
+[I]   ordered - true
+[I]   iterable - arc.struct.Seq$SeqIterable@2ff95fc6
+[I] Methods:
+[I]   add
+[I]   add
+[I]   add
+[I]   add
+[I]   add
+[I]   add
+[I]   remove
+[I]   remove
+[I]   remove
+[I]   remove
+[I]   get
+[I]   equals
+[I]   toString
+[I]   toString
+[I]   toString
+[I]   hashCode
+[I]   min
+[I]   min
+[I]   min
+[I]   max
+[I]   max
+[I]   max
+[I]   indexOf
+[I]   indexOf
+[I]   indexOf
+[I]   insert
+[I]   clear
+[I]   lastIndexOf
+[I]   isEmpty
+[I]   replace
+[I]   replace
+[I]   toArray
+[I]   toArray
+[I]   toArray
+[I]   iterator
+[I]   map
+[I]   count
+[I]   contains
+[I]   contains
+[I]   contains
+[I]   list
+[I]   addAll
+[I]   addAll
+[I]   addAll
+[I]   addAll
+[I]   addAll
+[I]   filter
+[I]   first
+[I]   find
+[I]   set
+[I]   set
+[I]   set
+[I]   flatMap
+[I]   copy
+[I]   ensureCapacity
+[I]   reverse
+[I]   peek
+[I]   as
+[I]   sum
+[I]   reduce
+[I]   sort
+[I]   sort
+[I]   sort
+[I]   removeRange
+[I]   removeAll
+[I]   removeAll
+[I]   removeAll
+[I]   retainAll
+[I]   containsAll
+[I]   containsAll
+[I]   each
+[I]   each
+[I]   distinct
+[I]   allMatch
+[I]   random
+[I]   random
+[I]   random
+[I]   swap
+[I]   shuffle
+[I]   pop
+[I]   pop
+[I]   with
+[I]   with
+[I]   with
+[I]   setSize
+[I]   flatten
+[I]   any
+[I]   select
+[I]   select
+[I]   withArrays
+[I]   asMap
+[I]   asMap
+[I]   asSet
+[I]   sumf
+[I]   mapInt
+[I]   mapFloat
+[I]   addUnique
+[I]   getFrac
+[I]   firstOpt
+[I]   shrink
+[I]   sortComparing
+[I]   selectFrom
+[I]   selectRanked
+[I]   selectRankedIndex
+[I]   truncate
+[I]   wait
+[I]   wait
+[I]   wait
+[I]   getClass
+[I]   notify
+[I]   notifyAll
+[I]   spliterator
+[I]   forEach
+[I] UnitCreateEvent
