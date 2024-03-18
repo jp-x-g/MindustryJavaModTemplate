@@ -17,56 +17,93 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
-        // units:
-
-        // ----- SERPULO -----
-        // alpha     beta      gamma
-        // -----
-        // dagger    mace      fortress  scepter   reign
-        // nova      pulsar    quasar    vela      corvus
-        // crawler   atrax     spiroct   arkyid    toxopid
-        // -----
-        // flare     horizon   zenith    antumbra  eclipse
-        // mono      poly      mega      quad      oct
-        // -----
-        // risso     minke     bryde     sei       omura
-        // retusa    oxynoe    cyerce    aegires   navanax
-
-        // ----- EREKIR -----
-        // evoke     incite    emanate
-        // -----
-        // stell     locus     precept   vanquish  conquer
-        // -----
-        // merui     cleroi    anthicus  tecta     collaris
-        // -----
-        // elude     avert     obviate   quell     disrupt
-        // -----
-        // latum     renale
-        // manifold 
-        // assemblydrone
-
-        // missile (unused)
-
-        // 10 t1-t5 trees (50), 2 t1-t3 trees (6)
-        // two unused neoplasm (latum+renale)
-        // two buildings that are technically units (manifold, assemblydrone)
-        // and "missile" (unused)
-        
-
-// this is based on https://github.com/BnDLett/custom-dagger-sounds/
-
 public class Main extends Plugin {
-    //    public class TriggerEvent {
-    //        private final Trigger trigger;
-    //
-    //        public TriggerEvent(Trigger trigger) {
-    //            this.trigger = trigger;
-    //        }
-    //
-    //        public Trigger getTrigger() {
-    //            return trigger;
-    //        }
-    //    } // ends TriggerEvent
+
+     public static class UnitTree {
+        private List<List<String>> units;
+        public UnitTree() {
+            units = new ArrayList<>(Arrays.asList(
+                // SERPULO: UNITS
+                Arrays.asList("dagger",   "mace",     "fortress", "scepter",  "reign"     ),
+                Arrays.asList("crawler",  "atrax",    "spiroct",  "arkyid",   "toxopid"   ),
+                Arrays.asList("nova",     "pulsar",   "quasar",   "vela",     "corvus"    ),
+                //
+                Arrays.asList("flare",    "horizon",  "zenith",   "antumbra", "eclipse"   ),
+                Arrays.asList("mono",     "poly",     "mega",     "quad",     "oct"       ),
+                //
+                Arrays.asList("risso",    "minke",    "bryde",    "sei",      "omura"     ),
+                Arrays.asList("retusa",   "oxynoe",   "cyerce",   "aegires",  "navanax"   ),
+                //
+                // SERPULO: CORE SHIPS
+                Arrays.asList("alpha",    "beta",     "gamma"                             ),
+                //
+                // EREKIR:  UNITS
+                Arrays.asList("stell",    "locus",    "precept",  "vanquish", "conquer"   ),
+                Arrays.asList("merui",    "cleroi",   "anthicus", "tecta",    "collaris"  ),
+                Arrays.asList("elude",    "avert",    "obviate",  "quell",    "disrupt"   ),
+                //
+                // EREKIR:  CORE SHIPS
+                Arrays.asList("evoke",    "incite",   "emanate"                           ),
+                //
+                // EREKIR:  NEOPLASM UNITS (unused)
+                Arrays.asList("latum",    "renale"                                        ),
+                //
+                // EREKIR:  BUILDING PARTS (technically units in code)
+                Arrays.asList("manifold"                                                  ),
+                Arrays.asList("assemblydrone"                                             )
+            ));
+
+        // in total, we have:
+        // 10 t1-t5 trees (50 units), 2 t1-t3 trees (6 units)
+        // two unused neoplasm units (latum+renale)
+        // two buildings that are technically units (manifold, assemblydrone)
+        // and "missile" (unused anywhere even in the code afaict)
+        // making 15 trees, i.e. 15 dirs in the sound assets folder
+        // and 60 units, i.e. 60 second-level directories
+
+        // every unit's files are subfolders of the unit tree's folder
+        // e.g. assets/sounds/retusa/aegires/aegires-spawn00.ogg
+        } // this sets up the UnitTree
+
+        public String first(String unitName) {
+            for (List<String> series : units) {
+                if (series.contains(unitName)) {
+                    return series.get(0);
+                }
+            }
+            return "none";
+        } // first
+
+        public int tier(String unitName) {
+            for (List<String> series : units) {
+                if (series.contains(unitName)) {
+                    return series.indexOf(unitName) + 1; // arrays are 0-indexed but units start at "T1"
+                }
+            }
+            return 0;
+        } // tier
+
+        public String next(String unitName) {
+            for (List<String> tier : units) {
+                int index = tier.indexOf(unitName);
+                if (index != -1 && index < tier.size() - 1) { // Check if unit is found and not the last one
+                    return tier.get(index + 1);
+                }
+            }
+            return "none";
+        } // next
+
+        public String prev(String unitName) {
+            for (List<String> tier : units) {
+                int index = tier.indexOf(unitName);
+                if (index != -1 && index > 0) { // Check if unit is found and not the last one
+                    return tier.get(index - 1);
+                }
+            }
+            return "none";
+        } // next
+
+    }
 
     @Override
     public void init() {
@@ -120,6 +157,49 @@ public class Main extends Plugin {
         // beans.spring.beans.beans.ObjectStrategyFactory.subclass.fart
 
         // but anyway that is then and this is now, we will just go with this for now
+
+        UnitTree unitTree = new UnitTree();
+        
+        // tests for the unitTree
+        // Log.info("first units in tree");
+        // Log.info("flare:");
+        // Log.info(unitTree.first("flare"));
+        // Log.info("omura:");
+        // Log.info(unitTree.first("omura"));
+        // Log.info("oxynoe:");
+        // Log.info(unitTree.first("oxynoe"));
+        // Log.info("assemblydrone:");
+        // Log.info(unitTree.first("assemblydrone"));
+
+        // Log.info("tier of units in tree");
+        // Log.info("flare:");
+        // Log.info(unitTree.tier("flare"));
+        // Log.info("omura:");
+        // Log.info(unitTree.tier("omura"));
+        // Log.info("oxynoe:");
+        // Log.info(unitTree.tier("oxynoe"));
+        // Log.info("assemblydrone:");
+        // Log.info(unitTree.tier("assemblydrone"));
+
+        // Log.info("next units in tree");
+        // Log.info("flare:");
+        // Log.info(unitTree.next("flare"));
+        // Log.info("omura:");
+        // Log.info(unitTree.next("omura"));
+        // Log.info("oxynoe:");
+        // Log.info(unitTree.next("oxynoe"));
+        // Log.info("assemblydrone:");
+        // Log.info(unitTree.next("assemblydrone"));
+
+        // Log.info("prev units in tree");
+        // Log.info("flare:");
+        // Log.info(unitTree.prev("flare"));
+        // Log.info("omura:");
+        // Log.info(unitTree.prev("omura"));
+        // Log.info("oxynoe:");
+        // Log.info(unitTree.prev("oxynoe"));
+        // Log.info("assemblydrone:");
+        // Log.info(unitTree.prev("assemblydrone"));
 
 
         Events.on(UnitDamageEvent.class, e -> {
@@ -189,7 +269,8 @@ public class Main extends Plugin {
             Log.info("unitCommandChange");
             // if (!String.valueOf(unit.type()).equals("quasar")) return;
             testzeal01.at(0,0);
-            // Look at what the selection is.
+
+            // Look at what the selection is, scan all units out of it.
             Object[] itemArray = Vars.control.input.selectedUnits.toArray();
             for (Object item : itemArray) {
                 // Printing item gives something like: "Unit#982:poly" -- so we will just split that.
@@ -199,10 +280,18 @@ public class Main extends Plugin {
         });  
 
         Events.run(Trigger.unitCommandAttack, () -> {
-            Log.info("unitCommandChange");
+            Log.info("unitCommandAttack");
             // if (!String.valueOf(unit.type()).equals("quasar")) return;
             dingDb5.at(0,0);
         });  
+        // The unitCommandPosition commit has been merged but not into main branch so commenting this out for now
+        // Events.run(Trigger.unitCommandPosition, () -> {
+        //     Log.info("unitCommandPosition");
+        //     // if (!String.valueOf(unit.type()).equals("quasar")) return;
+        //     dingB5.at(0,0);
+        // });  
+
+
         // unitComp contains:
         // x, y, rotation, elevation, maxHealth, drag, armor, hitSize, health, shield, ammo, dragMultiplier, armorOverride, speedMultiplier
         // team, id, mineTile, vel, mounts, stack
@@ -246,6 +335,9 @@ public class Main extends Plugin {
                 Log.info("is commandable");
                 Log.info(String.valueOf(e.unit.isCommandable()));
                 testzeal01.at(e.spawner.x, e.spawner.y);
+                // unit type
+                    String.valueOf(e.unit.type());
+
                 if (String.valueOf(e.unit.type()).equals("quasar")) {
                     Log.info("quasar");
                     testzeal03.at(e.spawner.x, e.spawner.y);
