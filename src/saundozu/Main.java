@@ -159,48 +159,13 @@ public class Main extends Plugin {
         // but anyway that is then and this is now, we will just go with this for now
 
         UnitTree unitTree = new UnitTree();
-        
+
         // tests for the unitTree
-        // Log.info("first units in tree");
-        // Log.info("flare:");
-        // Log.info(unitTree.first("flare"));
-        // Log.info("omura:");
-        // Log.info(unitTree.first("omura"));
-        // Log.info("oxynoe:");
-        // Log.info(unitTree.first("oxynoe"));
-        // Log.info("assemblydrone:");
-        // Log.info(unitTree.first("assemblydrone"));
-
-        // Log.info("tier of units in tree");
-        // Log.info("flare:");
-        // Log.info(unitTree.tier("flare"));
-        // Log.info("omura:");
-        // Log.info(unitTree.tier("omura"));
-        // Log.info("oxynoe:");
-        // Log.info(unitTree.tier("oxynoe"));
-        // Log.info("assemblydrone:");
-        // Log.info(unitTree.tier("assemblydrone"));
-
-        // Log.info("next units in tree");
-        // Log.info("flare:");
-        // Log.info(unitTree.next("flare"));
-        // Log.info("omura:");
-        // Log.info(unitTree.next("omura"));
-        // Log.info("oxynoe:");
-        // Log.info(unitTree.next("oxynoe"));
-        // Log.info("assemblydrone:");
-        // Log.info(unitTree.next("assemblydrone"));
-
-        // Log.info("prev units in tree");
-        // Log.info("flare:");
-        // Log.info(unitTree.prev("flare"));
-        // Log.info("omura:");
-        // Log.info(unitTree.prev("omura"));
-        // Log.info("oxynoe:");
-        // Log.info(unitTree.prev("oxynoe"));
-        // Log.info("assemblydrone:");
-        // Log.info(unitTree.prev("assemblydrone"));
-
+        // Log.info("tests for unitTree");
+        Log.info("flare | tier: " + unitTree.tier("flare") + " / first: " + unitTree.first("flare") + " / prev: " + unitTree.prev("flare") + " / next: " + unitTree.next("flare") );
+        Log.info("omura | tier: " + unitTree.tier("omura") + " / first: " + unitTree.first("omura") + " / prev: " + unitTree.prev("omura") + " / next: " + unitTree.next("omura") );
+        Log.info("bryde | tier: " + unitTree.tier("bryde") + " / first: " + unitTree.first("bryde") + " / prev: " + unitTree.prev("bryde") + " / next: " + unitTree.next("bryde") );
+        Log.info("gamma | tier: " + unitTree.tier("gamma") + " / first: " + unitTree.first("gamma") + " / prev: " + unitTree.prev("gamma") + " / next: " + unitTree.next("gamma") );
 
         Events.on(UnitDamageEvent.class, e -> {
             if (!e.unit.isPlayer()) return;
