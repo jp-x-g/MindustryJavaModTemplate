@@ -34,14 +34,12 @@ import java.util.jar.JarFile;
 public class Main extends Plugin {
 
 
-
-
-    public static class JarFileLister {
-        public static List<String> listSounds(String directory) throws IOException, URISyntaxException {
+    public static class FileFetcher {
+        public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
             List<String> fileList = new ArrayList<>();
             //Log.info("asdf1");
             // Get a reference to the JAR file that contains this class
-            URI uri = JarFileLister.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+            URI uri = FileFetcher.class.getProtectionDomain().getCodeSource().getLocation().toURI();
             //Log.info("asdf2");
             JarFile jarFile = new JarFile(new java.io.File(uri));
             //Log.info("asdf3");
@@ -61,12 +59,12 @@ public class Main extends Plugin {
                     // This should have something to load the file and add it to the sounds object.
                     // Doing it outside this loop would make us return an array here and search it later
                     // if there are 400 sounds, this means... 400 searches of a 400-item array. dumb!
-
+                    // unitSounds
                 }
             }
             
             jarFile.close();
-            return fileList;
+            //return fileList;
         }
     }
 
@@ -284,78 +282,20 @@ public class Main extends Plugin {
     public void init() {
         // test for file listing
         Log.info("Starting to open");
-        try {
-            List<String> filesInDir = JarFileLister.listSounds("assets/sounds/risso");
+        //try {
+            //List<String> filesInDir = FileFetcher.listSounds();
             // Log.info("Starting to open 1");
-            filesInDir.forEach(filePath -> Log.info(filePath));
+            //filesInDir.forEach(filePath -> Log.info(filePath));
             // Log.info("Starting to open 2");
-        } catch (IOException | URISyntaxException e) {
-            Log.info("Le failed");
-            e.printStackTrace();
-        }
+        //} catch (IOException | URISyntaxException e) {
+            //Log.info("Le failed");
+            //e.printStackTrace();
+        //}
         //////////////////////////////////////////////////
         // BELOW: Set up unit tree, initialize sounds.
         //////////////////////////////////////////////////
 
         UnitTree unitTree = new UnitTree();
-
-        sounds.put("risso-die-001",     Vars.tree.loadSound("risso/risso/risso-die-001"));
-        sounds.put("risso-die-002",     Vars.tree.loadSound("risso/risso/risso-die-002"));
-        sounds.put("dingC5",     Vars.tree.loadSound("ding432-C5"));
-        sounds.put("dingD5",     Vars.tree.loadSound("ding432-D5"));
-        sounds.put("dingDb5",    Vars.tree.loadSound("ding432-Db5"));
-        sounds.put("dingE5",     Vars.tree.loadSound("ding432-E5"));
-        sounds.put("dingEb5",    Vars.tree.loadSound("ding432-Eb5"));
-        sounds.put("dingF5",     Vars.tree.loadSound("ding432-F5"));
-        sounds.put("dingG5",     Vars.tree.loadSound("ding432-G5"));
-        sounds.put("dingGb5",    Vars.tree.loadSound("ding432-Gb5"));
-        sounds.put("dingA5",     Vars.tree.loadSound("ding432-A5"));
-        sounds.put("dingAb5",    Vars.tree.loadSound("ding432-Ab5"));
-        sounds.put("dingB5",     Vars.tree.loadSound("ding432-B5"));
-        sounds.put("dingBb5",    Vars.tree.loadSound("ding432-Bb5"));
-        sounds.put("elec01",     Vars.tree.loadSound("elec01"));
-        sounds.put("testzeal01", Vars.tree.loadSound("test-zeal01"));
-        sounds.put("testzeal02", Vars.tree.loadSound("test-zeal02"));
-        sounds.put("testzeal03", Vars.tree.loadSound("test-zeal03"));
-        sounds.put("testzeal04", Vars.tree.loadSound("test-zeal04"));
-        sounds.put("testwrai11", Vars.tree.loadSound("test-wrai11"));
-        sounds.put("testwrai12", Vars.tree.loadSound("test-wrai12"));
-        sounds.put("testwrai13", Vars.tree.loadSound("test-wrai13"));
-        sounds.put("testwrai14", Vars.tree.loadSound("test-wrai14"));
-        sounds.put("testwrai15", Vars.tree.loadSound("test-wrai15"));
-        sounds.put("testwrai16", Vars.tree.loadSound("test-wrai16"));
-        sounds.put("testwrai17", Vars.tree.loadSound("test-wrai17"));
-        sounds.put("testwrai18", Vars.tree.loadSound("test-wrai18"));
-        sounds.put("testwrai19", Vars.tree.loadSound("test-wrai19"));
-        // TODO; these are dummy files in assets/sounds, eventually they will be real
-        // then they will be like dagger/damage-01.ogg, dagger/die-02.ogg
-        // et cetera. there's 50 units so each will have their own folder
-        // with however many sounds as are recorded
-        // (units that get used all the time with high APM will have more sounds)
-        // (units that nobody makes bc they suck, like the navanax, will just have like 4)
-        // the way im thinking of doing this is something like:
-        // doing a "ls" equivalent on the directory to get its tree, then loading all the files
-        // this means that if e.g. i add a "dagger/die-06.ogg" to the folder
-        // i don't have to go through this java file and hardcode another line to load that
-        // it would just parse the ls output and keep loading files
-        // until it got to the end of however many they were for a unit and event
-
-        // if i were using python or js this would be a simple dict
-        // i.e. sth like, for each result:
-        // parse the directory into "dirstring", filename prior to dash as "event"
-        // then store it as soundfiles[dirstring][event]
-        // so e.g. soundfiles['dagger']['die'] would be an array
-        // with 6 elements, or 8 or however many there happened to be
-
-        // in java i assume it is some gigantic excruciating object oriented 
-        // beans.spring.beans.beans.ObjectStrategyFactory.subclass.fart
-
-        // but anyway that is then and this is now, we will just go with this for now
-
-        // unitTree.loadAllSounds();
-
-        // tests for the unitTree
-        // Log.info("tests for unitTree");
         Log.info("flare | tier: " + unitTree.tier("flare") + " / first: " + unitTree.first("flare") + " / prev: " + unitTree.prev("flare") + " / next: " + unitTree.next("flare") );
         Log.info("omura | tier: " + unitTree.tier("omura") + " / first: " + unitTree.first("omura") + " / prev: " + unitTree.prev("omura") + " / next: " + unitTree.next("omura") );
         Log.info("bryde | tier: " + unitTree.tier("bryde") + " / first: " + unitTree.first("bryde") + " / prev: " + unitTree.prev("bryde") + " / next: " + unitTree.next("bryde") );
@@ -392,6 +332,8 @@ public class Main extends Plugin {
             unitSounds.put(unit, actionSounds);
         } // iterates over unitTree.flatlist()
 
+        // Now we have the skeleton created for the unitSounds object.
+
 
         //////////////////////////////////////////////////
         // Now we go buckwild in the directories
@@ -419,7 +361,68 @@ public class Main extends Plugin {
         // we want to put this in the unitSounds["toxopid"]["CMD"] array
         // AND in unitSounds["toxopid"]["ATK"] so it can serve as both.
 
-        // give em hell gpt
+        unitSounds = FileFetcher.fillSounds(unitSounds);
+
+        sounds.put("risso-die-001",     Vars.tree.loadSound("risso/risso/risso-die-001"));
+        sounds.put("risso-die-002",     Vars.tree.loadSound("risso/risso/risso-die-002"));
+        sounds.put("dingC5",     Vars.tree.loadSound("ding432-C5"));
+        sounds.put("dingD5",     Vars.tree.loadSound("ding432-D5"));
+        sounds.put("dingDb5",    Vars.tree.loadSound("ding432-Db5"));
+        sounds.put("dingE5",     Vars.tree.loadSound("ding432-E5"));
+        sounds.put("dingEb5",    Vars.tree.loadSound("ding432-Eb5"));
+        sounds.put("dingF5",     Vars.tree.loadSound("ding432-F5"));
+        sounds.put("dingG5",     Vars.tree.loadSound("ding432-G5"));
+        sounds.put("dingGb5",    Vars.tree.loadSound("ding432-Gb5"));
+        sounds.put("dingA5",     Vars.tree.loadSound("ding432-A5"));
+        sounds.put("dingAb5",    Vars.tree.loadSound("ding432-Ab5"));
+        sounds.put("dingB5",     Vars.tree.loadSound("ding432-B5"));
+        sounds.put("dingBb5",    Vars.tree.loadSound("ding432-Bb5"));
+        sounds.put("elec01",     Vars.tree.loadSound("elec01"));
+        sounds.put("testzeal01", Vars.tree.loadSound("test-zeal01"));
+        sounds.put("testzeal02", Vars.tree.loadSound("test-zeal02"));
+        sounds.put("testzeal03", Vars.tree.loadSound("test-zeal03"));
+        sounds.put("testzeal04", Vars.tree.loadSound("test-zeal04"));
+        sounds.put("testwrai11", Vars.tree.loadSound("test-wrai11"));
+        sounds.put("testwrai12", Vars.tree.loadSound("test-wrai12"));
+        sounds.put("testwrai13", Vars.tree.loadSound("test-wrai13"));
+        sounds.put("testwrai14", Vars.tree.loadSound("test-wrai14"));
+        sounds.put("testwrai15", Vars.tree.loadSound("test-wrai15"));
+        sounds.put("testwrai16", Vars.tree.loadSound("test-wrai16"));
+        sounds.put("testwrai17", Vars.tree.loadSound("test-wrai17"));
+        sounds.put("testwrai18", Vars.tree.loadSound("test-wrai18"));
+        sounds.put("testwrai19", Vars.tree.loadSound("test-wrai19"));
+        // long comment re: dummy sounds
+        {
+        // TODO; these are dummy files in assets/sounds, eventually they will be real
+        // then they will be like dagger/damage-01.ogg, dagger/die-02.ogg
+        // et cetera. there's 50 units so each will have their own folder
+        // with however many sounds as are recorded
+        // (units that get used all the time with high APM will have more sounds)
+        // (units that nobody makes bc they suck, like the navanax, will just have like 4)
+        // the way im thinking of doing this is something like:
+        // doing a "ls" equivalent on the directory to get its tree, then loading all the files
+        // this means that if e.g. i add a "dagger/die-06.ogg" to the folder
+        // i don't have to go through this java file and hardcode another line to load that
+        // it would just parse the ls output and keep loading files
+        // until it got to the end of however many they were for a unit and event
+
+        // if i were using python or js this would be a simple dict
+        // i.e. sth like, for each result:
+        // parse the directory into "dirstring", filename prior to dash as "event"
+        // then store it as soundfiles[dirstring][event]
+        // so e.g. soundfiles['dagger']['die'] would be an array
+        // with 6 elements, or 8 or however many there happened to be
+
+        // in java i assume it is some gigantic excruciating object oriented 
+        // beans.spring.beans.beans.ObjectStrategyFactory.subclass.fart
+
+        // but anyway that is then and this is now, we will just go with this for now
+
+        // unitTree.loadAllSounds();
+
+        // tests for the unitTree
+        // Log.info("tests for unitTree");
+        }
 
         //////////////////////////////////////////////////
         // BELOW: Set up actual event listeners
