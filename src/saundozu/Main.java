@@ -20,12 +20,65 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+// to list dir contents
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+
 public class Main extends Plugin {
+
+
+
+
+    public static class JarFileLister {
+        public static List<String> listSounds(String directory) throws IOException, URISyntaxException {
+            List<String> fileList = new ArrayList<>();
+            //Log.info("asdf1");
+            // Get a reference to the JAR file that contains this class
+            URI uri = JarFileLister.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+            //Log.info("asdf2");
+            JarFile jarFile = new JarFile(new java.io.File(uri));
+            //Log.info("asdf3");
+            // Iterate through the entries of the JAR file
+            Enumeration<JarEntry> entries = jarFile.entries();
+            //Log.info("asdf4");
+            while (entries.hasMoreElements()) {
+               // Log.info("asdf5");
+                JarEntry entry = entries.nextElement();
+                String name = entry.getName();
+                //Log.info(name);
+
+                // Check if the entry is in the specified directory and add it to the list
+                if (name.contains(".ogg") || name.contains(".mp3")) {
+                    //Log.info("asdf6");
+                    fileList.add(name);
+                    // This should have something to load the file and add it to the sounds object.
+                    // Doing it outside this loop would make us return an array here and search it later
+                    // if there are 400 sounds, this means... 400 searches of a 400-item array. dumb!
+
+                }
+            }
+            
+            jarFile.close();
+            return fileList;
+        }
+    }
 
     Map<String, Sound> sounds = new HashMap<>();
 
     UnitTree unitTree = new UnitTree();
 
+    // Map<String, Map<String, Seq<Sound>>> sounds = new HashMap<>();
+    // For doing this non-stupidly in a few minutes.
+
+    private void addSound(String unit, String action, String path) {
+    }
 
     public static class UnitTree {
         private List<List<String>> units;
@@ -109,11 +162,47 @@ public class Main extends Plugin {
                 }
             }
             return "none";
-        } // next
+        } // prev
+
+        public List<String> flatList() {
+            List<String> flatList = new ArrayList<>();
+            for (List<String> sublist : units) {
+                flatList.addAll(sublist);
+            }
+            return flatList;
+        } // flatList
     } // ends UnitTree
 
 
-
+    public static class unitActions {
+        public static Map<String, String> map() {
+            Map<String, String> actions = new HashMap<>();
+            
+            actions.put("UnitCreateEvent",     "BLD");
+            actions.put("UnitUnloadEvent",     "ULD");
+            actions.put("UnitControlEvent",    "CTL");
+            actions.put("unitCommandChange",   "SEL");
+            actions.put("unitCommandPosition", "CMD");
+            actions.put("unitCommandAttack",   "ATK");
+            actions.put("UnitDamageEvent",     "DMG");
+            actions.put("UnitDestroyEvent",    "DIE");
+            
+            return actions;
+        } // map()
+        public static Map<String, String> maprv() {
+            // Mildly stupid way to return it the other way around
+            // (i.e. so key "BLD" returns value "UnitCreateEvent")
+            Map<String, String> actions = map(); // Use the unitActions method to get the original mapping
+            Map<String, String> abbrevActions = new HashMap<>();
+        
+            // Iterate through the original map and reverse the mappings
+            for (Map.Entry<String, String> entry : actions.entrySet()) {
+                abbrevActions.put(entry.getValue(), entry.getKey());
+            }
+            return abbrevActions;
+        } // maprv()
+    } // ends unitActions
+    
 
     public void playSound(Unit unit, String event) {
         if (unit.team().equals(Vars.player.team())) {
@@ -193,8 +282,22 @@ public class Main extends Plugin {
 
     @Override
     public void init() {
-        
+        // test for file listing
+        Log.info("Starting to open");
+        try {
+            List<String> filesInDir = JarFileLister.listSounds("assets/sounds/risso");
+            // Log.info("Starting to open 1");
+            filesInDir.forEach(filePath -> Log.info(filePath));
+            // Log.info("Starting to open 2");
+        } catch (IOException | URISyntaxException e) {
+            Log.info("Le failed");
+            e.printStackTrace();
+        }
+        //////////////////////////////////////////////////
+        // BELOW: Set up unit tree, initialize sounds.
+        //////////////////////////////////////////////////
 
+        UnitTree unitTree = new UnitTree();
 
         sounds.put("risso-die-001",     Vars.tree.loadSound("risso/risso/risso-die-001"));
         sounds.put("risso-die-002",     Vars.tree.loadSound("risso/risso/risso-die-002"));
@@ -258,25 +361,85 @@ public class Main extends Plugin {
         Log.info("bryde | tier: " + unitTree.tier("bryde") + " / first: " + unitTree.first("bryde") + " / prev: " + unitTree.prev("bryde") + " / next: " + unitTree.next("bryde") );
         Log.info("gamma | tier: " + unitTree.tier("gamma") + " / first: " + unitTree.first("gamma") + " / prev: " + unitTree.prev("gamma") + " / next: " + unitTree.next("gamma") );
 
-            //if (!e.unit.isPlayer()) return;
-            //if (!String.valueOf(e.unit.type()).equals("gamma")) return;
-            //elec01.at(e.unit.x, e.unit.y);
+        //////////////////////////////////////////////////
+        // Set up skeleton for the big unitSounds object
+        // that we'll put all of the sound objects in later
+        // as we read them out of the directories.
+        //////////////////////////////////////////////////
 
+        //  initialize basic structure for this huge duesy object:
+        Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
+        //  |           |       |
+        //  "risso"     |       |
+        //              "ATK"   |
+        //                      array of individual sound files
+        // so e.g. you can fetch unitSounds.get("risso").get("ATK")
+
+        Map<String, String> actions = unitActions.maprv(); // Use maprv() for abbreviations as keys
+
+        // Now, we have a List<String>, filesInDir, that has the name of every file in the assets/sound dir.
+
+        // could also be
+        // for (int i = 0; i < unitTree.flatList().size(); i++) {
+        for (String unit : unitTree.flatList()) {
+            Map<String, Seq<Sound>> actionSounds = new HashMap<>();
+            // Iterate over action abbreviations (e.g., "BLD", "ULD")
+            for (String actionAbbrev : actions.keySet()) {
+                // Initialize each action with an empty sequence of sounds
+                actionSounds.put(actionAbbrev, new Seq<Sound>());
+            }
+            // Put the initialized map for this unit into the unitSounds map
+            unitSounds.put(unit, actionSounds);
+        } // iterates over unitTree.flatlist()
+
+
+        //////////////////////////////////////////////////
+        // Now we go buckwild in the directories
+        //////////////////////////////////////////////////
+
+        // what we want to do here is something like list the directories in ./assets/sounds/
+        // the loader already fills that part in for us, as well as the trailing ".ogg"
+        // so e.g. ./assets/sounds/blahblah.ogg is Vars.tree.loadSound("blahblah")
+
+        // files for each unit are located in ./assets/sounds/nonsense/unitname/
+        // "nonsense" can be anything. stuff should not depend on this!
+        // what we want to do is list every second-level folder in "sounds"
+        // and then, for each, list every sound file that's in it.
+
+        // then for each sound file, we'll iterate through the eight events
+        // we want to iterate through the events -- of which there are eight
+        // ("ATK", "CMD" etc) -- we want to get this as the keys from unitActions.maprv()
+
+        // and if a sound file has these strings in the filename, it gets added to the
+        // appropriate area.
+
+        // like e.g. if there's a file:
+        // ./assets/sounds/spooders/toxopid/toxopid-CMD-ATK-CTL-033.ogg
+
+        // we want to put this in the unitSounds["toxopid"]["CMD"] array
+        // AND in unitSounds["toxopid"]["ATK"] so it can serve as both.
+
+        // give em hell gpt
+
+        //////////////////////////////////////////////////
+        // BELOW: Set up actual event listeners
+        //////////////////////////////////////////////////
         Events.on(UnitDamageEvent.class, e -> {
             // when unit takes damage
+            // has .unit, .bullet
             Log.info("UnitDamageEvent: " + String.valueOf(e.unit.type()));
-            playSound(e.unit, "Damage");
+            playSound(e.unit, "UnitDamageEvent");
         });       
         Events.on(UnitDestroyEvent.class, e -> {
             // when unit is destroyed
             Log.info("UnitDestroyEvent: " + String.valueOf(e.unit.type()));
-            playSound(e.unit, "Destroy");
+            playSound(e.unit, "UnitDestroyEvent");
         });    
         Events.on(UnitControlEvent.class, e -> {
             // this is when the player starts manually piloting a unit
             // NOT when the user selects it and gives it a RTS command
             Log.info("UnitControlEvent: " + String.valueOf(e.unit.type()));
-            playSound(e.unit, "Control");
+            playSound(e.unit, "UnitControlEvent");
         });    
         Events.on(UnitUnloadEvent.class, e -> {
             // for being "dumped from any payload block"
@@ -284,11 +447,12 @@ public class Main extends Plugin {
             // (i.e. doesn't fire for intermediate construction stages)
             // also when you spawn from a payload source
             Log.info("UnitUnloadEvent: " + String.valueOf(e.unit.type()));
-            playSound(e.unit, "Unload");
+            playSound(e.unit, "UnitUnloadEvent");
         });    
 
         Events.on(UnitCreateEvent.class, e -> {
             // when unit is made in a constructor
+            // has .unit, .spawner, .spawnerUnit
 
             // note: fires even if it is being popped into another constructor,
             // or a payload conveyor, or is blocked from exiting the constructor
@@ -320,6 +484,20 @@ public class Main extends Plugin {
         //    Log.info("unitCommandPosition");
         //    playGroupSound(Vars.control.input.selectedUnits, "unitCommandPosition");
         //});  
+        // other events we dont have listeners for:
+        // Mindustry/core/src/mindustry/game/EventType.java
+
+        // PickupEvent which has .carrier, .unit, .build
+        // PayloadDropEvent, has .carrier, .unit, .build (for building)
+        // BuildingCommandEvent, has player, building, position
+
+        // UnitDrownEvent, has .unit
+        // UnitBulletDestroyEvent has .unit, .bullet
+        //       Called when a unit is directly killed by a bullet. May not fire in all circumstances
+        // UnitSpawnEvent, has .unit
+        //    for spawning in a wave
+        // UnitChangeEvent, has .player and .unit
+        //    ?
 
         // unitComp contains:
         // x, y, rotation, elevation, maxHealth, drag, armor, hitSize, health, shield, ammo, dragMultiplier, armorOverride, speedMultiplier
@@ -330,23 +508,3 @@ public class Main extends Plugin {
         // isPlayer, getPlayer
     } // ends init
 } // ends Main
-
-        // Mindustry/core/src/mindustry/game/EventType.java
-        // potentially useful:
-        // PickupEvent which has .carrier, .unit, .build
-        // PayloadDropEvent, has .carrier, .unit, .build (for building)
-        // BuildingCommandEvent, has player, building, position
-
-        // UnitDrownEvent, has .unit
-        // UnitBulletDestroyEvent has .unit, .bullet
-        //       Called when a unit is directly killed by a bullet. May not fire in all circumstances
-        // UnitDestroyEvent, has .unit
-        // UnitDamageEvent, has .unit, .bullet
-        // UnitCreateEvent, has .unit, .spawner, .spawnerUnit
-        //    this is for being made in a constructor
-        // UnitSpawnEvent, has .unit
-        //    for spawning in a wave
-        // UnitUnloadEvent, has .unit
-        //    for being "dumped from any payload block"
-        // UnitChangeEvent, has .player and .unit
-        //    ?
