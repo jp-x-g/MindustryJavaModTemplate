@@ -42,19 +42,19 @@ public class Main extends Plugin {
     // "UnitDamageEvent"     "DMG"
     // "UnitDestroyEvent"    "DIE"
 
-    //private static final Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
+    public static Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
                             //  |           |       |
                             //  "risso"     |       |
                             //              "ATK"   |
                             //                      array of individual sound files
                             // so e.g. you can fetch unitSounds.get("risso").get("ATK")
 
-    public static class FileFetcher {
-        public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
-
-
-        }
-    }
+//     public static class FileFetcher {
+        // public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
+// 
+//             return "Never, because this class is stupid."
+//         }
+//     }
 
     Map<String, Sound> sounds = new HashMap<>();
 
@@ -183,28 +183,34 @@ public class Main extends Plugin {
     } // ends unitActions
     
 
-    public void playSound(Unit unit, String event, Map<String, Map<String, Seq<Sound>>> unitSounds) {
+    // public void playSound(Unit unit, String event, Map<String, Map<String, Seq<Sound>>> unitSounds) {
+    public void playSound(Unit unit, String event) {
+        //sounds.get("elec01").at(unit.x, unit.y);
         String unitType   = String.valueOf(unit.type());
         String actionCode = unitActions.map().get(event);
         // converts e.g. "UnitCreateEvent" -> "BLD".
         Log.info("Received a " + actionCode + " for a " + unitType + ".");
-
         if (unit.team().equals(Vars.player.team())) {
             //if(unit.isCommandable()) {
             if(true) {
                 Log.info("on player team and commandable");
                 //sounds.get("testzeal04").at(e.spawner.x, e.spawner.y);
                 //sounds.get("risso-die-001").at(unit.x, unit.y);
+                //sounds.get("testzeal01").at(unit.x, unit.y);
                 if(unitSounds.get(unitType) != null) {
                     Log.info("unitSounds.get(" + unitType + ").get(" + actionCode + ")");
                     if (unitSounds.get(unitType).get(actionCode).isEmpty() == false) {
                         Log.info("Playing sound");
                         unitSounds.get(unitType).get(actionCode).random().at(unit.x, unit.y);
+                        //unitSounds.get(unitType).get(actionCode).first().at(unit.x, unit.y);
                     }else{
                        Log.info("No sound for " + actionCode + " for " + unitType + ".");
                     } // end of thing to check if sound exists and play it or not
                 }else{
                     Log.info("No sounds.");
+                    unitSounds.get("risso").get("ULD").first().at(unit.x, unit.y);
+                    // [E] java.lang.NullPointerException: Cannot invoke "java.util.Map.get(Object)" because the return value of "java.util.Map.get(Object)" is null
+                    // what??????????
                 }
             } // if isCommandable
         } // if on player's team
@@ -222,7 +228,8 @@ public class Main extends Plugin {
             //}
     } // ends playSound
 
-    public void playGroupSound(Seq<Unit> selectedUnits, String event, Map<String, Map<String, Seq<Sound>>> unitSounds) {
+    //public void playGroupSound(Seq<Unit> selectedUnits, String event, Map<String, Map<String, Seq<Sound>>> unitSounds) {
+    public void playGroupSound(Seq<Unit> selectedUnits, String event) {
         Log.info("Playing group sound");
         // if (!String.valueOf(unit.type()).equals("quasar")) return;
         //testzeal01.at(0,0);
@@ -321,6 +328,7 @@ public class Main extends Plugin {
             Map<String, Seq<Sound>> actionSounds = new HashMap<>();
             // Iterate over action abbreviations (e.g., "BLD", "ULD")
             for (String actionAbbrev : actions.keySet()) {
+                Log.info("Setting up skelly for " + unit + " / " + actionAbbrev);
                 // Initialize each action with an empty sequence of sounds
                 actionSounds.put(actionAbbrev, new Seq<Sound>());
             }
@@ -335,7 +343,7 @@ public class Main extends Plugin {
         //////////////////////////////////////////////////
 
         try {
-            String[] actions = unitActions.maprv().keySet().toArray(new String[0]);
+            String[] actionsArray = unitActions.maprv().keySet().toArray(new String[0]);
             // Gets a simple array of the unit actions, i.e. "CMD", "ATK", "DIE" etc.
             List<String> fileList = new ArrayList<>();
             //Log.info("asdf1");
@@ -362,11 +370,15 @@ public class Main extends Plugin {
                     String ultimate = nameparts[(nameparts.length - 1)];
                     String penultim = nameparts[(nameparts.length - 2)];
                     String stripped = name.substring(0, name.length() - 4);
+                    // remove file extension
+                    stripped = stripped.substring(7);
+                    // sounds/
+                    // 0123456
                     if (unitSounds.containsKey(penultim)){
                         Log.info("ultimate= " + ultimate);
                         Log.info("penultim= " + penultim);
                         Log.info("stripped= " + stripped);
-                        for(String act : actions) {
+                        for(String act : actionsArray) {
                             if(ultimate.contains(act)) {
                                 Log.info("This is a " + act + " for the " + penultim + ".");
                                 Log.info("Trying to load " + stripped);
@@ -385,14 +397,8 @@ public class Main extends Plugin {
             jarFile.close();
             //return fileList;
 
-            Sound pissass = Vars.tree.loadSound("sounds/risso/risso/risso-SEL-CMD-ATK-007");
-            pissass.play();
-            
             Log.info("Loaded the sounds.");
             Log.info("Here is a risso CMDing.");
-            Log.info(unitSounds.get("risso").get("CMD").toString());
-            unitSounds.get("risso").get("CMD").random().play(1, 1, 0, false);
-            unitSounds.get("risso").get("CMD").first().play(1, 1, 0, false);
             if(true) {
                 sounds.put("risso-die-001",     Vars.tree.loadSound("risso/risso/risso-die-001"));
                 sounds.put("risso-die-002",     Vars.tree.loadSound("risso/risso/risso-die-002"));
@@ -422,39 +428,9 @@ public class Main extends Plugin {
                 sounds.put("testwrai17", Vars.tree.loadSound("test-wrai17"));
                 sounds.put("testwrai18", Vars.tree.loadSound("test-wrai18"));
                 sounds.put("testwrai19", Vars.tree.loadSound("test-wrai19"));
-                // long comment re: dummy sounds
-                {
-                // TODO; these are dummy files in assets/sounds, eventually they will be real
-                // then they will be like dagger/damage-01.ogg, dagger/die-02.ogg
-                // et cetera. there's 50 units so each will have their own folder
-                // with however many sounds as are recorded
-                // (units that get used all the time with high APM will have more sounds)
-                // (units that nobody makes bc they suck, like the navanax, will just have like 4)
-                // the way im thinking of doing this is something like:
-                // doing a "ls" equivalent on the directory to get its tree, then loading all the files
-                // this means that if e.g. i add a "dagger/die-06.ogg" to the folder
-                // i don't have to go through this java file and hardcode another line to load that
-                // it would just parse the ls output and keep loading files
-                // until it got to the end of however many they were for a unit and event
+                unitSounds.get("risso").get("ULD").add(Vars.tree.loadSound("risso/risso/risso-ULD-001"));
+            } // if true
 
-                // if i were using python or js this would be a simple dict
-                // i.e. sth like, for each result:
-                // parse the directory into "dirstring", filename prior to dash as "event"
-                // then store it as soundfiles[dirstring][event]
-                // so e.g. soundfiles['dagger']['die'] would be an array
-                // with 6 elements, or 8 or however many there happened to be
-
-                // in java i assume it is some gigantic excruciating object oriented 
-                // beans.spring.beans.beans.ObjectStrategyFactory.subclass.fart
-
-                // but anyway that is then and this is now, we will just go with this for now
-
-                // unitTree.loadAllSounds();
-
-                // tests for the unitTree
-                // Log.info("tests for unitTree");
-                }
-            }
             //////////////////////////////////////////////////
             // BELOW: Set up actual event listeners
             //////////////////////////////////////////////////
@@ -462,18 +438,18 @@ public class Main extends Plugin {
                 // when unit takes damage
                 // has .unit, .bullet
                 Log.info("UnitDamageEvent: " + String.valueOf(e.unit.type()));
-                playSound(e.unit, "UnitDamageEvent", unitSoundsFinalFinal);
+                playSound(e.unit, "UnitDamageEvent");
             });       
             Events.on(UnitDestroyEvent.class, e -> {
                 // when unit is destroyed
                 Log.info("UnitDestroyEvent: " + String.valueOf(e.unit.type()));
-                playSound(e.unit, "UnitDestroyEvent", unitSoundsFinalFinal);
+                playSound(e.unit, "UnitDestroyEvent");
             });    
             Events.on(UnitControlEvent.class, e -> {
                 // this is when the player starts manually piloting a unit
                 // NOT when the user selects it and gives it a RTS command
                 Log.info("UnitControlEvent: " + String.valueOf(e.unit.type()));
-                playSound(e.unit, "UnitControlEvent", unitSoundsFinalFinal);
+                playSound(e.unit, "UnitControlEvent");
             });    
             Events.on(UnitUnloadEvent.class, e -> {
                 // for being "dumped from any payload block"
@@ -481,7 +457,7 @@ public class Main extends Plugin {
                 // (i.e. doesn't fire for intermediate construction stages)
                 // also when you spawn from a payload source
                 Log.info("UnitUnloadEvent: " + String.valueOf(e.unit.type()));
-                playSound(e.unit, "UnitUnloadEvent", unitSoundsFinalFinal);
+                playSound(e.unit, "UnitUnloadEvent");
             });    
 
             Events.on(UnitCreateEvent.class, e -> {
@@ -493,7 +469,7 @@ public class Main extends Plugin {
                 // by a wall or whatever. this doesn't mean the unit is usable yet
 
                 Log.info("UnitCreateEvent: " + String.valueOf(e.unit.type()));
-                playSound(e.unit, "UnitCreateEvent", unitSoundsFinalFinal);
+                playSound(e.unit, "UnitCreateEvent");
                 if (e.spawner != null) {
                     sounds.get("elec01").at(e.spawner.x, e.spawner.y);
                 }
@@ -506,18 +482,18 @@ public class Main extends Plugin {
                 // in the previous select group (i.e. this won't fire if you already
                 // have a set of units selected, and drag a new box that selects the same set)
                 Log.info("unitCommandChange");
-                playGroupSound(Vars.control.input.selectedUnits, "unitCommandChange", unitSoundsFinalFinal);
+                playGroupSound(Vars.control.input.selectedUnits, "unitCommandChange");
             });  
             Events.run(Trigger.unitCommandAttack, () -> {
                 // for when a select group is commanded to a location that involves attacking
                 // enemy units (i.e. the selector turns red)
                 Log.info("unitCommandAttack");
-                playGroupSound(Vars.control.input.selectedUnits, "unitCommandAttack", unitSoundsFinalFinal);
+                playGroupSound(Vars.control.input.selectedUnits, "unitCommandAttack");
             });  
             } catch (IOException | URISyntaxException e) {
             Log.info("Le failed to load sounds");
             e.printStackTrace();
-            final Map<String, Map<String, Seq<Sound>>> unitSoundsFinalFinal = new HashMap<>();
+            //final Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
         } // end gigantic cursed try block
         
         // The unitCommandPosition commit has been merged but not into main branch so commenting this out for now
