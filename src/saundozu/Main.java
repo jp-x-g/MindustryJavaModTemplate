@@ -42,7 +42,7 @@ public class Main extends Plugin {
     // "UnitDamageEvent"     "DMG"
     // "UnitDestroyEvent"    "DIE"
 
-    public Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
+    public Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
                     //  |           |       |
                     //  "risso"     |       |
                     //              "ATK"   |
