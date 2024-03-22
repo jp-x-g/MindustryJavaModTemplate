@@ -42,12 +42,12 @@ public class Main extends Plugin {
     // "UnitDamageEvent"     "DMG"
     // "UnitDestroyEvent"    "DIE"
 
-    public static Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
-                            //  |           |       |
-                            //  "risso"     |       |
-                            //              "ATK"   |
-                            //                      array of individual sound files
-                            // so e.g. you can fetch unitSounds.get("risso").get("ATK")
+    public static Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
+                    //  |           |       |
+                    //  "risso"     |       |
+                    //              "ATK"   |
+                    //                      array of individual sound files
+                    // so e.g. you can fetch unitSounds.get("risso").get("ATK")
 
 //     public static class FileFetcher {
         // public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
@@ -208,7 +208,7 @@ public class Main extends Plugin {
                     } // end of thing to check if sound exists and play it or not
                 }else{
                     Log.info("No sounds.");
-                    unitSounds.get("risso").get("ULD").first().at(unit.x, unit.y);
+                    unitSounds.get("risso").get("ULD").get(0).at(unit.x, unit.y);
                     // [E] java.lang.NullPointerException: Cannot invoke "java.util.Map.get(Object)" because the return value of "java.util.Map.get(Object)" is null
                     // what??????????
                 }
@@ -313,7 +313,7 @@ public class Main extends Plugin {
         //////////////////////////////////////////////////
 
         //  initialize basic structure for this huge duesy object:
-        Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
+        Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
         //  |           |       |
         //  "risso"     |       |
         //              "ATK"   |
@@ -325,12 +325,12 @@ public class Main extends Plugin {
         // could also be
         // for (int i = 0; i < unitTree.flatList().size(); i++) {
         for (String unit : unitTree.flatList()) {
-            Map<String, Seq<Sound>> actionSounds = new HashMap<>();
+            Map<String, ArrayList<Sound>> actionSounds = new HashMap<>();
             // Iterate over action abbreviations (e.g., "BLD", "ULD")
             for (String actionAbbrev : actions.keySet()) {
                 Log.info("Setting up skelly for " + unit + " / " + actionAbbrev);
                 // Initialize each action with an empty sequence of sounds
-                actionSounds.put(actionAbbrev, new Seq<Sound>());
+                actionSounds.put(actionAbbrev, new ArrayList<Sound>());
             }
             // Put the initialized map for this unit into the unitSounds map
             unitSounds.put(unit, actionSounds);
