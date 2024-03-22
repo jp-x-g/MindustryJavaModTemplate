@@ -32,10 +32,24 @@ import java.util.jar.JarFile;
 
 
 public class Main extends Plugin {
+    // Actions:
+    // "UnitCreateEvent"     "BLD"
+    // "UnitUnloadEvent"     "ULD"
+    // "UnitControlEvent"    "CTL"
+    // "unitCommandChange"   "SEL"
+    // "unitCommandPosition" "CMD"
+    // "unitCommandAttack"   "ATK"
+    // "UnitDamageEvent"     "DMG"
+    // "UnitDestroyEvent"    "DIE"
 
 
     public static class FileFetcher {
         public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
+
+            String[] actions = unitActions.maprv().keySet().toArray(new String[0]);
+            // Gets a simple array of the unit actions, i.e. "CMD", "ATK", "DIE" etc.
+
+
             List<String> fileList = new ArrayList<>();
             //Log.info("asdf1");
             // Get a reference to the JAR file that contains this class
@@ -53,30 +67,53 @@ public class Main extends Plugin {
                 //Log.info(name);
 
                 // Check if the entry is in the specified directory and add it to the list
-                if (name.contains(".ogg") || name.contains(".mp3")) {
+                String lastFour = name.toLowerCase().substring(name.length() - 4);
+                // (it should parse .ogg but also .OGG and .OgG and whatever)
+                if (lastFour.contains(".ogg") || lastFour.contains(".mp3")) {
+                    String[] nameparts = name.split("/");
+                    Log.info(name);
+                    String ultimate = nameparts[(nameparts.length - 1)];
+                    String penultim = nameparts[(nameparts.length - 2)];
+                    String stripped = name.substring(0, name.length() - 4);
+                    Log.info("ultimate= " + ultimate);
+                    Log.info("penultim= " + penultim);
+                    Log.info("stripped= " + stripped);
+                    if (unitSounds.containsKey(penultim)){
+                        Log.info("Contains");
+                        for(String act : actions) {
+                            if(ultimate.contains(act)) {
+                                Log.info("This is a " + act + " for the " + penultim + ".");
+                            } // If that audio file is for that action.
+                            //unitSounds.get(penultim).get("ATK").add(Vars.tree.loadSound(stripped));
+                        }   // For each action type.
+                    }else{
+                        Log.info("Does not contain");
+                    }
+                    //Log.info(nameparts[0]);
+                    //Log.info(nameparts[1]);
+                    // this crashes mindustry lmao
+                    //Log.info(nameparts[2]);
+
                     //Log.info("asdf6");
                     fileList.add(name);
                     // This should have something to load the file and add it to the sounds object.
                     // Doing it outside this loop would make us return an array here and search it later
                     // if there are 400 sounds, this means... 400 searches of a 400-item array. dumb!
                     // unitSounds
+
+
                 }
             }
             
             jarFile.close();
             //return fileList;
+            return unitSounds;
         }
     }
 
     Map<String, Sound> sounds = new HashMap<>();
 
     UnitTree unitTree = new UnitTree();
-
-    // Map<String, Map<String, Seq<Sound>>> sounds = new HashMap<>();
-    // For doing this non-stupidly in a few minutes.
-
-    private void addSound(String unit, String action, String path) {
-    }
 
     public static class UnitTree {
         private List<List<String>> units;
@@ -170,7 +207,6 @@ public class Main extends Plugin {
             return flatList;
         } // flatList
     } // ends UnitTree
-
 
     public static class unitActions {
         public static Map<String, String> map() {
@@ -317,8 +353,6 @@ public class Main extends Plugin {
 
         Map<String, String> actions = unitActions.maprv(); // Use maprv() for abbreviations as keys
 
-        // Now, we have a List<String>, filesInDir, that has the name of every file in the assets/sound dir.
-
         // could also be
         // for (int i = 0; i < unitTree.flatList().size(); i++) {
         for (String unit : unitTree.flatList()) {
@@ -360,8 +394,13 @@ public class Main extends Plugin {
 
         // we want to put this in the unitSounds["toxopid"]["CMD"] array
         // AND in unitSounds["toxopid"]["ATK"] so it can serve as both.
-
-        unitSounds = FileFetcher.fillSounds(unitSounds);
+        try {
+            unitSounds = FileFetcher.fillSounds(unitSounds);
+        } catch (IOException | URISyntaxException e) {
+            Log.info("Le failed to load sounds");
+            e.printStackTrace();
+        }
+        
 
         sounds.put("risso-die-001",     Vars.tree.loadSound("risso/risso/risso-die-001"));
         sounds.put("risso-die-002",     Vars.tree.loadSound("risso/risso/risso-die-002"));
