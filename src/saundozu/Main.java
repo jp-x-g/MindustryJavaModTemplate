@@ -42,7 +42,7 @@ public class Main extends Plugin {
     // "UnitDamageEvent"     "DMG"
     // "UnitDestroyEvent"    "DIE"
 
-    private static final Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
+    //private static final Map<String, Map<String, Seq<Sound>>> unitSounds = new HashMap<>();
                             //  |           |       |
                             //  "risso"     |       |
                             //              "ATK"   |
@@ -52,61 +52,7 @@ public class Main extends Plugin {
     public static class FileFetcher {
         public static Map<String, Map<String, Seq<Sound>>> fillSounds(Map<String, Map<String, Seq<Sound>>> unitSounds) throws IOException, URISyntaxException {
 
-            String[] actions = unitActions.maprv().keySet().toArray(new String[0]);
-            // Gets a simple array of the unit actions, i.e. "CMD", "ATK", "DIE" etc.
 
-
-            List<String> fileList = new ArrayList<>();
-            //Log.info("asdf1");
-            // Get a reference to the JAR file that contains this class
-            URI uri = FileFetcher.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-            //Log.info("asdf2");
-            JarFile jarFile = new JarFile(new java.io.File(uri));
-            //Log.info("asdf3");
-            // Iterate through the entries of the JAR file
-            Enumeration<JarEntry> entries = jarFile.entries();
-            //Log.info("asdf4");
-            while (entries.hasMoreElements()) {
-               // Log.info("asdf5");
-                JarEntry entry = entries.nextElement();
-                String name = entry.getName();
-                //Log.info(name);
-
-                // Check if the entry is in the specified directory and add it to the list
-                String lastFour = name.toLowerCase().substring(name.length() - 4);
-                // (it should parse .ogg but also .OGG and .OgG and whatever)
-                if (lastFour.contains(".ogg") || lastFour.contains(".mp3")) {
-                    String[] nameparts = name.split("/");
-                    Log.info(name);
-                    String ultimate = nameparts[(nameparts.length - 1)];
-                    String penultim = nameparts[(nameparts.length - 2)];
-                    String stripped = name.substring(0, name.length() - 4);
-                    if (unitSounds.containsKey(penultim)){
-                        Log.info("ultimate= " + ultimate);
-                        Log.info("penultim= " + penultim);
-                        Log.info("stripped= " + stripped);
-                        for(String act : actions) {
-                            if(ultimate.contains(act)) {
-                                Log.info("This is a " + act + " for the " + penultim + ".");
-                                Log.info("Trying to load " + stripped);
-                                Sound strippedSound = Vars.tree.loadSound(stripped);
-                                unitSounds.get(penultim).get(act).add(strippedSound);
-                                //unitSounds.get(penultim).get(act).random().play();
-                                // Actually add the sound file to the proper place in the unitSounds skelly.
-                            } // If that audio file is for that action.
-                        }   // For each action type.
-                    }else{
-                        //Log.info("Does not contain");
-                    }
-                }
-            }
-            
-            jarFile.close();
-            //return fileList;
-
-            Sound pissass = Vars.tree.loadSound("sounds/risso/risso/risso-SEL-CMD-ATK-007");
-            pissass.play();
-            return unitSounds;
         }
     }
 
@@ -389,7 +335,59 @@ public class Main extends Plugin {
         //////////////////////////////////////////////////
 
         try {
-            final Map<String, Map<String, Seq<Sound>>> unitSoundsFinalFinal = FileFetcher.fillSounds(unitSounds);
+            String[] actions = unitActions.maprv().keySet().toArray(new String[0]);
+            // Gets a simple array of the unit actions, i.e. "CMD", "ATK", "DIE" etc.
+            List<String> fileList = new ArrayList<>();
+            //Log.info("asdf1");
+            // Get a reference to the JAR file that contains this class
+            URI uri = getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+            //Log.info("asdf2");
+            JarFile jarFile = new JarFile(new java.io.File(uri));
+            //Log.info("asdf3");
+            // Iterate through the entries of the JAR file
+            Enumeration<JarEntry> entries = jarFile.entries();
+            //Log.info("asdf4");
+            while (entries.hasMoreElements()) {
+               // Log.info("asdf5");
+                JarEntry entry = entries.nextElement();
+                String name = entry.getName();
+                //Log.info(name);
+
+                // Check if the entry is in the specified directory and add it to the list
+                String lastFour = name.toLowerCase().substring(name.length() - 4);
+                // (it should parse .ogg but also .OGG and .OgG and whatever)
+                if (lastFour.contains(".ogg") || lastFour.contains(".mp3")) {
+                    String[] nameparts = name.split("/");
+                    Log.info(name);
+                    String ultimate = nameparts[(nameparts.length - 1)];
+                    String penultim = nameparts[(nameparts.length - 2)];
+                    String stripped = name.substring(0, name.length() - 4);
+                    if (unitSounds.containsKey(penultim)){
+                        Log.info("ultimate= " + ultimate);
+                        Log.info("penultim= " + penultim);
+                        Log.info("stripped= " + stripped);
+                        for(String act : actions) {
+                            if(ultimate.contains(act)) {
+                                Log.info("This is a " + act + " for the " + penultim + ".");
+                                Log.info("Trying to load " + stripped);
+                                Sound strippedSound = Vars.tree.loadSound(stripped);
+                                unitSounds.get(penultim).get(act).add(strippedSound);
+                                //unitSounds.get(penultim).get(act).random().play();
+                                // Actually add the sound file to the proper place in the unitSounds skelly.
+                            } // If that audio file is for that action.
+                        }   // For each action type.
+                    }else{
+                        //Log.info("Does not contain");
+                    }  // handle if there's a key for the unit type
+                } // if last four are .ogg or .mp3, meaning if it's a valid soud
+            }   // while entries has more elements
+            
+            jarFile.close();
+            //return fileList;
+
+            Sound pissass = Vars.tree.loadSound("sounds/risso/risso/risso-SEL-CMD-ATK-007");
+            pissass.play();
+            
             Log.info("Loaded the sounds.");
             Log.info("Here is a risso CMDing.");
             Log.info(unitSounds.get("risso").get("CMD").toString());
