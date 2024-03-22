@@ -42,7 +42,7 @@ public class Main extends Plugin {
     // "UnitDamageEvent"     "DMG"
     // "UnitDestroyEvent"    "DIE"
 
-    public static Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
+    public Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
                     //  |           |       |
                     //  "risso"     |       |
                     //              "ATK"   |
@@ -201,14 +201,17 @@ public class Main extends Plugin {
                     Log.info("unitSounds.get(" + unitType + ").get(" + actionCode + ")");
                     if (unitSounds.get(unitType).get(actionCode).isEmpty() == false) {
                         Log.info("Playing sound");
-                        unitSounds.get(unitType).get(actionCode).random().at(unit.x, unit.y);
+                        unitSounds.get(unitType).get(actionCode).get(0).at(unit.x, unit.y);
                         //unitSounds.get(unitType).get(actionCode).first().at(unit.x, unit.y);
                     }else{
                        Log.info("No sound for " + actionCode + " for " + unitType + ".");
                     } // end of thing to check if sound exists and play it or not
                 }else{
                     Log.info("No sounds.");
-                    unitSounds.get("risso").get("ULD").get(0).at(unit.x, unit.y);
+                    //Log.info("All keys of unitSounds: " + unitSounds.keySet());
+                    //Log.info("Actions available for risso: " + unitSounds.get("risso").keySet());
+                    //unitSounds.get("risso").get("ULD").add(Vars.tree.loadSound("risso/risso/risso-ULD-001"));
+                    //unitSounds.get("risso").get("ULD").get(0).at(unit.x, unit.y);
                     // [E] java.lang.NullPointerException: Cannot invoke "java.util.Map.get(Object)" because the return value of "java.util.Map.get(Object)" is null
                     // what??????????
                 }
@@ -313,7 +316,7 @@ public class Main extends Plugin {
         //////////////////////////////////////////////////
 
         //  initialize basic structure for this huge duesy object:
-        Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
+        //Map<String, Map<String, ArrayList<Sound>>> unitSounds = new HashMap<>();
         //  |           |       |
         //  "risso"     |       |
         //              "ATK"   |
