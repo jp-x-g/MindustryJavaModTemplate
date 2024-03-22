@@ -64,34 +64,35 @@ public class Main extends Plugin {
         private List<List<String>> units;
         public UnitTree() {
             units = new ArrayList<>(Arrays.asList(
-                // SERPULO: UNITS
-                Arrays.asList("dagger",   "mace",     "fortress", "scepter",  "reign"     ),
-                Arrays.asList("crawler",  "atrax",    "spiroct",  "arkyid",   "toxopid"   ),
-                Arrays.asList("nova",     "pulsar",   "quasar",   "vela",     "corvus"    ),
-                //
-                Arrays.asList("flare",    "horizon",  "zenith",   "antumbra", "eclipse"   ),
-                Arrays.asList("mono",     "poly",     "mega",     "quad",     "oct"       ),
-                //
-                Arrays.asList("risso",    "minke",    "bryde",    "sei",      "omura"     ),
-                Arrays.asList("retusa",   "oxynoe",   "cyerce",   "aegires",  "navanax"   ),
-                //
-                // SERPULO: CORE SHIPS
-                Arrays.asList("alpha",    "beta",     "gamma"                             ),
-                //
-                // EREKIR:  UNITS
-                Arrays.asList("stell",    "locus",    "precept",  "vanquish", "conquer"   ),
-                Arrays.asList("merui",    "cleroi",   "anthicus", "tecta",    "collaris"  ),
-                Arrays.asList("elude",    "avert",    "obviate",  "quell",    "disrupt"   ),
-                //
                 // EREKIR:  CORE SHIPS
                 Arrays.asList("evoke",    "incite",   "emanate"                           ),
                 //
-                // EREKIR:  NEOPLASM UNITS (unused)
-                Arrays.asList("latum",    "renale"                                        ),
+                // EREKIR:  UNITS
+                Arrays.asList("merui",    "cleroi",   "anthicus", "tecta",    "collaris"  ),
+                Arrays.asList("stell",    "locus",    "precept",  "vanquish", "conquer"   ),
+                Arrays.asList("elude",    "avert",    "obviate",  "quell",    "disrupt"   ),
+                //
+                // SERPULO: CORE SHIPS
+                Arrays.asList("alpha",    "beta",     "gamma"                             ),
+                //,
+                // SERPULO: UNITS
+                Arrays.asList("risso",    "minke",    "bryde",    "sei",      "omura"     ),
+                Arrays.asList("retusa",   "oxynoe",   "cyerce",   "aegires",  "navanax"   ),
+                //
+                Arrays.asList("nova",     "pulsar",   "quasar",   "vela",     "corvus"    ),
+                Arrays.asList("crawler",  "atrax",    "spiroct",  "arkyid",   "toxopid"   ),
+                Arrays.asList("dagger",   "mace",     "fortress", "scepter",  "reign"     ),
+                //
+                Arrays.asList("mono",     "poly",     "mega",     "quad",     "oct"       ),
+                Arrays.asList("flare",    "horizon",  "zenith",   "antumbra", "eclipse"   ),
                 //
                 // EREKIR:  BUILDING PARTS (technically units in code)
+                Arrays.asList("assemblydrone"                                             ),
                 Arrays.asList("manifold"                                                  ),
-                Arrays.asList("assemblydrone"                                             )
+                //
+                // EREKIR:  NEOPLASM UNITS (unused)
+                Arrays.asList("latum",    "renale"                                        )
+                //
             ));
 
         // in total, we have:
@@ -151,6 +152,20 @@ public class Main extends Plugin {
             }
             return flatList;
         } // flatList
+
+        public List<String> tierList() {
+            // return ranked list of which units take precedence when emitting sounds for a selection group
+            return(Arrays.asList(
+                "emanate",   "gamma",      "incite",     "beta",       "evoke",      "alpha",
+                "collaris",  "conquer",    "disrupt",    "omura",      "navanax",    "corvus",     "toxopid",    "reign",      "oct",        "eclipse",
+                "tecta",     "vanquish",   "quell",      "sei",        "aegires",    "vela",       "arkyid",     "scepter",    "quad",       "antumbra",  
+                "anthicus",  "precept",    "obviate",    "bryde",      "cyerce",     "quasar",     "spiroct",    "fortress",   "mega",       "zenith", 
+                "cleroi",    "locus",      "avert",      "minke",      "oxynoe",     "pulsar",     "atrax",      "mace",       "poly",       "horizon",
+                "merui",     "stell",      "elude",      "risso",      "retusa",     "nova",       "crawler",    "dagger",     "mono",       "flare",
+                "latum",     "renale",
+                "manifold",  "assemblydrone"
+            ));
+        } // tierList
     } // ends UnitTree
 
     public static class unitActions {
@@ -194,9 +209,6 @@ public class Main extends Plugin {
             //if(unit.isCommandable()) {
             if(true) {
                 Log.info("on player team and commandable");
-                //sounds.get("testzeal04").at(e.spawner.x, e.spawner.y);
-                //sounds.get("risso-die-001").at(unit.x, unit.y);
-                //sounds.get("testzeal01").at(unit.x, unit.y);
                 if(unitSounds.get(unitType) != null) {
                     Log.info("unitSounds.get(" + unitType + ").get(" + actionCode + ")");
                     if (unitSounds.get(unitType).get(actionCode).isEmpty() == false) {
@@ -208,12 +220,6 @@ public class Main extends Plugin {
                     } // end of thing to check if sound exists and play it or not
                 }else{
                     Log.info("No sounds.");
-                    //Log.info("All keys of unitSounds: " + unitSounds.keySet());
-                    //Log.info("Actions available for risso: " + unitSounds.get("risso").keySet());
-                    //unitSounds.get("risso").get("ULD").add(Vars.tree.loadSound("risso/risso/risso-ULD-001"));
-                    //unitSounds.get("risso").get("ULD").get(0).at(unit.x, unit.y);
-                    // [E] java.lang.NullPointerException: Cannot invoke "java.util.Map.get(Object)" because the return value of "java.util.Map.get(Object)" is null
-                    // what??????????
                 }
             } // if isCommandable
         } // if on player's team
@@ -223,12 +229,6 @@ public class Main extends Plugin {
             //Log.info("is commandable");
             //Log.info(String.valueOf(unit.isCommandable()));
             //sounds.get("testzeal01").at(e.spawner.x, e.spawner.y);
-            // unit type
-            //String.valueOf(unit.type());
-            //if (String.valueOf(unit.type()).equals("quasar")) {
-            //    Log.info("quasar");
-            //    //sounds.get("testzeal03").at(e.spawner.x, e.spawner.y);
-            //}
     } // ends playSound
 
     //public void playGroupSound(Seq<Unit> selectedUnits, String event, Map<String, Map<String, Seq<Sound>>> unitSounds) {
@@ -237,53 +237,33 @@ public class Main extends Plugin {
         // if (!String.valueOf(unit.type()).equals("quasar")) return;
         //testzeal01.at(0,0);
         // Look at what the selection is, scan all units out of it.
-        Object[] itemArray = Vars.control.input.selectedUnits.toArray();
+        List<String> tierList = unitTree.tierList();
+        //Unit[] itemArray    = Vars.control.input.selectedUnits.toArray();
+        if (selectedUnits.size < 1){
+            return;
+        } else {
+            Unit highestUnit = selectedUnits.get(0);
+            Integer highestTier = 999;
 
-        // Now we will do something kind of complicated.
+            for (Unit item : selectedUnits) {
+                // Printing item gives something like: "Unit#982:poly" -- so we will just split that.
+                String unitName = item.toString().split(":")[1];
+                Integer tier = tierList.indexOf(unitName);
 
-        // We will get the highest-tier unit out of the selection.
-        // But what if there are, say, two t5s? They don't outrank each other.
-        // so instead we will get the highest ranking unit from each tree
+                Log.info(tier);
 
-        // the dumbest way to do this is:
-        // add each new unit in the group to a list
-        // then go through and remove every unit lower than it in the same tree
+                if((tier < highestTier) && (tier != -1)){
+                    highestTier = tier;
+                    highestUnit = item;
+                }
+            } // for each array item
+            Log.info("Highest-tier unit in selection: " + highestTier);
+            if (highestTier != 999) {
+                // "anthicus-missile" is a unit, for example, so we need to filter out random crap like that
+                playSound(highestUnit, event);
+            } // dispatch sound for highest tier of unit selected, unless no valid units were in the selection
+        } // if there's a size for selectedunits
 
-        // alternate idea: nested loops
-
-        // for each unit tree:
-        // if selection contains (t5 of tree):
-        //      add t5 to group
-        //      else:
-        //      if selection contains (t4 of tree):
-        //          add t4 to group
-        //          else:
-
-        // and so on. this might be the least dumb thing
-
-        // for the core ships, latum, manifold, assemblydrone
-        // just don't do this at all: if they're in the selection they're in the sound group
-
-        // any map that has those units commandable is a meme that wont work right anyway
-        // prob less than .1% of games will feature any of these units being commanded
-
-        // they probably aren't even going to have unit sounds so whatever
-
-        // this whole thing is probably contingent on it not sounding awful to overlap the sounds
-        // its very well possible that doing this sounds like trash no matter how sophisticated
-        // so i just have to do a "pick highest ranking unit" from a somewhat arbitrary list anyway
-        // 
-
-        //ArrayList<String> tierFives = new ArrayList<>();
-        //String highest = "";
-        //int highestTier = 1;
-
-        for (Object item : itemArray) {
-            // Printing item gives something like: "Unit#982:poly" -- so we will just split that.
-            Log.info(unitTree.tier(item.toString().split(":")[1]));
-            Log.info(item.toString().split(":")[1]);
-            // Log.info(item + " (Type: " + item.getClass().getSimpleName() + ")");
-        } // for each array item
     } // ends playGroupSound
 
     @Override
