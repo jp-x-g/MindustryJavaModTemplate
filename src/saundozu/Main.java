@@ -201,7 +201,7 @@ public class Main extends Plugin {
                     Log.info("unitSounds.get(" + unitType + ").get(" + actionCode + ")");
                     if (unitSounds.get(unitType).get(actionCode).isEmpty() == false) {
                         Log.info("Playing sound");
-                        unitSounds.get(unitType).get(actionCode).get(0).at(unit.x, unit.y);
+                        unitSounds.get(unitType).get(actionCode).random().at(unit.x, unit.y);
                         //unitSounds.get(unitType).get(actionCode).first().at(unit.x, unit.y);
                     }else{
                        Log.info("No sound for " + actionCode + " for " + unitType + ".");
@@ -328,12 +328,12 @@ public class Main extends Plugin {
         // could also be
         // for (int i = 0; i < unitTree.flatList().size(); i++) {
         for (String unit : unitTree.flatList()) {
-            Map<String, ArrayList<Sound>> actionSounds = new HashMap<>();
+            Map<String, Seq<Sound>> actionSounds = new HashMap<>();
             // Iterate over action abbreviations (e.g., "BLD", "ULD")
             for (String actionAbbrev : actions.keySet()) {
                 Log.info("Setting up skelly for " + unit + " / " + actionAbbrev);
                 // Initialize each action with an empty sequence of sounds
-                actionSounds.put(actionAbbrev, new ArrayList<Sound>());
+                actionSounds.put(actionAbbrev, new Seq<Sound>());
             }
             // Put the initialized map for this unit into the unitSounds map
             unitSounds.put(unit, actionSounds);
